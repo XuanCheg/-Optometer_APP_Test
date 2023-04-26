@@ -55,6 +55,8 @@ class Ui_Mainwindow(QMainWindow):
         clear.setGeometry(QtCore.QRect(70, 480, 91, 51))
         unclear = QPushButton("unclear", self)
         unclear.setGeometry(QtCore.QRect(260, 480, 91, 51))
+        scale = QPushButton("0.2*0.2", self)
+        scale.setGeometry(QtCore.QRect(314, 480, 91, 51))
         # 对错进度条
         self.ProgressBarWrong = QProgressBar(self)
         self.ProgressBarWrong.setGeometry(QtCore.QRect(580, 70, 171, 31))
@@ -90,6 +92,7 @@ class Ui_Mainwindow(QMainWindow):
         right.clicked.connect(self.buttonClicked)
         clear.clicked.connect(self.buttonClicked)
         unclear.clicked.connect(self.buttonClicked)
+        scale.clicked.connect(self.buttonClicked)
         # 主界面
         self.statusBar()
         self.resize(800, 600)
@@ -118,7 +121,9 @@ class Ui_Mainwindow(QMainWindow):
     # 按钮事件 若完成声控识别，此函数可删除，更改为一个input事件
     def buttonClicked(self):
         sender = self.sender()
-
+        if sender.text() == "0.2*0.2":
+            self.set_scale(0.2, 0.2)
+            return
         optometer.check(data, self.rand_dir, sender.text(), data.data_set)
         # 连续三次答对即可进入下一度数
         if data.data_set["flag"] == 3:
@@ -147,3 +152,6 @@ class Ui_Mainwindow(QMainWindow):
         self.rand_dir = randomgraph()
         self.scene.addPixmap(img_Product("4.6\\", data.Graph[self.rand_dir - 1]))
         self.OptometerShow.setScene(self.scene)
+
+    def set_scale(self, x, y):
+        self.OptometerShow.scale(x, y)
